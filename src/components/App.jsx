@@ -1,16 +1,12 @@
-export const App = () => {
-  return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
-  );
-};
+import React, { Component } from 'react';
+
+import { fetchPictures } from 'api/fetchPictures';
+import { Searchbar } from 'Searchbar/Searchbar';
+export class App extends Component {
+  componentDidMount() {
+    fetchPictures('sun').then(console.log);
+  }
+  render() {
+    return <Searchbar />;
+  }
+}
