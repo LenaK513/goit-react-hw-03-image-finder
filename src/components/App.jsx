@@ -4,28 +4,37 @@ import 'react-toastify/dist/ReactToastify.css';
 import { fetchPictures } from 'api/fetchPictures';
 import { Searchbar } from 'components/Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
+
 export class App extends Component {
   state = {
     pictureName: '',
     pictures: [],
+    loading: false,
+    error: null,
   };
 
   handleFormSubmit = pictureName => {
     this.setState({ pictureName });
   };
 
-  async searchPictures() {
+  async componentDidUpdate(prevProps, prevState) {
     const { pictureName } = this.state;
-    try {
-      const { data } = await fetchPictures(pictureName);
-      this.setState({ pictures: data.hits });
-      console.log(data.hits);
-    } catch (error) {}
+    if (prevState.pictureName !== pictureName) {
+      try {
+        this.setState({ loading: true });
+        const { data } = await fetchPictures(pictureName);
+        this.setState({
+          articles: data.hits,
+          error: null,
+        });
+      } catch (error) {
+        this.setState({ error });
+      } finally {
+        this.setState({ loading: false });
+      }
+    }
   }
 
-  componentDidMount() {
-    this.searchPictures();
-  }
   render() {
     return (
       <div>
