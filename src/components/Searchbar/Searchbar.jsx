@@ -10,7 +10,7 @@ export class Searchbar extends Component {
   };
 
   handleNameChange = event => {
-    console.log(event.currentTarget.value);
+    // console.log(event.currentTarget.value);
     this.setState({ pictureName: event.currentTarget.value.toLowerCase() });
   };
 
