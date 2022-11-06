@@ -24,7 +24,7 @@ export class App extends Component {
         this.setState({ loading: true });
         const { data } = await fetchPictures(pictureName);
         this.setState({
-          articles: data.hits,
+          pictures: data.hits,
           error: null,
         });
       } catch (error) {
@@ -39,7 +39,7 @@ export class App extends Component {
     return (
       <div>
         <Searchbar dataForm={this.handleFormSubmit} />
-        <ImageGallery pictureName={this.pictureName} />
+        <ImageGallery pictures={this.state.pictures} />
         <ToastContainer autoClose={2000} />
       </div>
     );
