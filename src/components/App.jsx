@@ -22,44 +22,33 @@ export class App extends Component {
   loadMore = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
+
   async componentDidUpdate(_, prevState) {
     const { pictureName, page } = this.state;
+    let data;
+    try {
+      data = await fetchPictures(pictureName, page);
 
-    if (prevState.pictureName === pictureName && prevState.page !== page) {
-      try {
-        const data = await fetchPictures(pictureName, page);
-        // this.setState({ page });
+      if (prevState.pictureName === pictureName && prevState.page !== page) {
+        this.setState({ page });
         this.setState(prevState => ({
           page,
           pictures: [...prevState.pictures, ...data.hits],
           error: null,
         }));
-      } catch (error) {
-        this.setState({ error });
-      } finally {
-        this.setState({ loading: false });
       }
-    }
 
-    if (prevState.pictureName !== pictureName) {
-      try {
-        const data = await fetchPictures(pictureName, page);
-
-        // this.setState({ page });
-        this.setState(prevState => ({
+      if (prevState.pictureName !== pictureName) {
+        this.setState({
           page: 1,
           pictures: data.hits,
           error: null,
-        }));
-      } catch (error) {
-        this.setState({ error });
-      } finally {
-        this.setState({ loading: false });
+        });
       }
-      //   if (!data) {
-      //   toast.error('There is no information');
-      //   return;
-      // }
+    } catch (error) {
+      this.setState({ error });
+    } finally {
+      this.setState({ loading: false });
     }
   }
 
@@ -71,6 +60,7 @@ export class App extends Component {
         {loading && <div>Loading</div>}
         {pictures.length > 0 && <ImageGallery pictures={pictures} />}
         {pictures.length !== 0 && <ButtonAPI onClick={this.loadMore} />}
+
         <ToastContainer autoClose={2000} />
       </div>
     );
