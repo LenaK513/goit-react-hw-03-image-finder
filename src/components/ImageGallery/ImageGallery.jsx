@@ -1,8 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
+import { Grid } from './ImageGallery.styled';
+
 export const ImageGallery = ({ pictures }) => {
   return (
-    <ul>
+    <Grid>
       {pictures.map(({ id, webformatURL }) => (
         <ImageGalleryItem
           id={id}
@@ -10,6 +13,16 @@ export const ImageGallery = ({ pictures }) => {
           src={webformatURL}
         ></ImageGalleryItem>
       ))}
-    </ul>
+    </Grid>
   );
+};
+
+ImageGallery.propTypes = {
+  pictures: PropTypes.arrayOf(
+    PropTypes.exact({
+      id: PropTypes.string.isRequired,
+
+      src: PropTypes.node.isRequired,
+    })
+  ),
 };
