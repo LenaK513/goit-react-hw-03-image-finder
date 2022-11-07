@@ -21,11 +21,10 @@ export class App extends Component {
     const { pictureName } = this.state;
     if (prevState.pictureName !== pictureName) {
       try {
-        this.setState({ loading: true });
-        const { data } = await fetchPictures(pictureName);
+        this.setState({ loading: true, error: null });
+        const data = await fetchPictures(pictureName);
         this.setState({
           pictures: data.hits,
-          error: null,
         });
       } catch (error) {
         this.setState({ error });
@@ -41,6 +40,7 @@ export class App extends Component {
       <div>
         <Searchbar dataForm={this.handleFormSubmit} />
         <ImageGallery pictures={pictures} />
+
         <ToastContainer autoClose={2000} />
       </div>
     );
