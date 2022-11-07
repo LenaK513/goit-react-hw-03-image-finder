@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { fetchPictures } from 'api/fetchPictures';
 import { Searchbar } from 'components/Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
+import { ButtonAPI } from './Button/Button';
 
 export class App extends Component {
   state = {
@@ -25,13 +26,14 @@ export class App extends Component {
     const { pictureName, page } = this.state;
 
     if (prevState.pictureName !== pictureName || prevState.page !== page) {
-      this.setState({ loading: true });
       try {
-        const data = await fetchPictures(pictureName);
-        this.setState({
-          pictures: data.hits,
+        const data = await fetchPictures(pictureName, page);
+        // this.setState({ page });
+        this.setState(prevState => ({
+          page,
+          pictures: [...prevState.pictures, ...data.hits],
           error: null,
-        });
+        }));
       } catch (error) {
         this.setState({ error });
       } finally {
@@ -47,7 +49,7 @@ export class App extends Component {
         <Searchbar dataForm={this.handleFormSubmit} />
         {loading && <div>Loading</div>}
         {pictures.length > 0 && <ImageGallery pictures={pictures} />}
-        <button onClick={this.loadMore}>MORE</button>
+        <ButtonAPI onClick={this.loadMore} />
         <ToastContainer autoClose={2000} />
       </div>
     );
