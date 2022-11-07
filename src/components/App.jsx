@@ -11,20 +11,26 @@ export class App extends Component {
     pictures: [],
     loading: false,
     error: null,
+    page: 1,
   };
 
   handleFormSubmit = pictureName => {
     this.setState({ pictureName });
   };
 
+  loadMore = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
+  };
   async componentDidUpdate(_, prevState) {
-    const { pictureName } = this.state;
-    if (prevState.pictureName !== pictureName) {
+    const { pictureName, page } = this.state;
+
+    if (prevState.pictureName !== pictureName || prevState.page !== page) {
+      this.setState({ loading: true });
       try {
-        this.setState({ loading: true, error: null });
         const data = await fetchPictures(pictureName);
         this.setState({
           pictures: data.hits,
+          error: null,
         });
       } catch (error) {
         this.setState({ error });
@@ -35,12 +41,13 @@ export class App extends Component {
   }
 
   render() {
-    const { pictures } = this.state;
+    const { pictures, loading } = this.state;
     return (
       <div>
         <Searchbar dataForm={this.handleFormSubmit} />
-        <ImageGallery pictures={pictures} />
-
+        {loading && <div>Loading</div>}
+        {pictures.length > 0 && <ImageGallery pictures={pictures} />}
+        <button onClick={this.loadMore}>MORE</button>
         <ToastContainer autoClose={2000} />
       </div>
     );

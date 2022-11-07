@@ -17,11 +17,11 @@ export class Searchbar extends Component {
   handleSubmit = event => {
     event.preventDefault();
     if (this.state.pictureName.trim() === '') {
-      toast.warn('alarm!');
+      toast.warn('There is no information in search field!');
       return;
     }
     this.props.dataForm(this.state.pictureName);
-    this.setState({ pictureName: '' });
+    this.setState({ pictureName: '', page: 1, pictures: [] });
   };
 
   render() {
