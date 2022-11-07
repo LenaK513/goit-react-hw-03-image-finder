@@ -24,7 +24,7 @@ export class App extends Component {
         this.setState({ loading: true });
         const { data } = await fetchPictures(pictureName);
         this.setState({
-          pictures:({data.hits}),
+          pictures: data.hits,
           error: null,
         });
       } catch (error) {
@@ -36,6 +36,7 @@ export class App extends Component {
   }
 
   render() {
+    const { pictures } = this.state;
     return (
       <div>
         <Searchbar dataForm={this.handleFormSubmit} />
