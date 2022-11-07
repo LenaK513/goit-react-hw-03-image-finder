@@ -10,7 +10,6 @@ export class Searchbar extends Component {
   };
 
   handleNameChange = event => {
-    // console.log(event.currentTarget.value);
     this.setState({ pictureName: event.currentTarget.value.toLowerCase() });
   };
 
@@ -20,8 +19,8 @@ export class Searchbar extends Component {
       toast.warn('There is no information in search field!');
       return;
     }
+    this.setState({ pictureName: '' });
     this.props.dataForm(this.state.pictureName);
-    this.setState({ pictureName: '', page: 1, pictures: [] });
   };
 
   render() {

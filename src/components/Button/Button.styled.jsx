@@ -1,7 +1,11 @@
 import styled from '@emotion/styled';
 
 export const Button = styled.button`
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
   padding: 8px 16px;
+  margin: auto 0;
   border-radius: 2px;
   background-color: #3f51b5;
   transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);

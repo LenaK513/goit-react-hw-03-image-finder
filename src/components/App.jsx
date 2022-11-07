@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { fetchPictures } from 'api/fetchPictures';
 import { Searchbar } from 'components/Searchbar/Searchbar';
@@ -25,7 +25,7 @@ export class App extends Component {
   async componentDidUpdate(_, prevState) {
     const { pictureName, page } = this.state;
 
-    if (prevState.pictureName !== pictureName || prevState.page !== page) {
+    if (prevState.pictureName === pictureName && prevState.page !== page) {
       try {
         const data = await fetchPictures(pictureName, page);
         // this.setState({ page });
@@ -40,6 +40,27 @@ export class App extends Component {
         this.setState({ loading: false });
       }
     }
+
+    if (prevState.pictureName !== pictureName) {
+      try {
+        const data = await fetchPictures(pictureName, page);
+
+        // this.setState({ page });
+        this.setState(prevState => ({
+          page: 1,
+          pictures: data.hits,
+          error: null,
+        }));
+      } catch (error) {
+        this.setState({ error });
+      } finally {
+        this.setState({ loading: false });
+      }
+      //   if (!data) {
+      //   toast.error('There is no information');
+      //   return;
+      // }
+    }
   }
 
   render() {
@@ -49,7 +70,7 @@ export class App extends Component {
         <Searchbar dataForm={this.handleFormSubmit} />
         {loading && <div>Loading</div>}
         {pictures.length > 0 && <ImageGallery pictures={pictures} />}
-        <ButtonAPI onClick={this.loadMore} />
+        {pictures.length !== 0 && <ButtonAPI onClick={this.loadMore} />}
         <ToastContainer autoClose={2000} />
       </div>
     );

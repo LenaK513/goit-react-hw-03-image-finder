@@ -4,7 +4,7 @@ import { Item } from './ImageGalleryItem.styled';
 import { Image } from './ImageGalleryItem.styled';
 export const ImageGalleryItem = ({ id, src }) => {
   return (
-    <Item id={id}>
+    <Item key={id} id={id}>
       <Image src={src} alt="#" />
     </Item>
   );
