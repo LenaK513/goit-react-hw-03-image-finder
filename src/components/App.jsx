@@ -48,7 +48,8 @@ export class App extends Component {
     }
 
     if (prevState.pictureName !== pictureName) {
-      this.setState({ error: null, loading: true, pictures: [], page: 1 });
+      this.setState({ loading: true });
+      this.setState({ error: null, pictures: [], page: 1 });
       try {
         data = await fetchPictures(pictureName, page);
         this.setState({
