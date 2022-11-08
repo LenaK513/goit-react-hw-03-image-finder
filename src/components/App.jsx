@@ -64,9 +64,8 @@ export class App extends Component {
     const { pictures, loading } = this.state;
     return (
       <div>
-        {loading && <Loader />}
         <Searchbar dataForm={this.handleFormSubmit} />
-
+        {<Loader />}
         {pictures.length > 0 && <ImageGallery pictures={pictures} />}
         {!loading && pictures.length !== 0 && (
           <ButtonAPI onClick={this.loadMore} />
