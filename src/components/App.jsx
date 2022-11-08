@@ -37,8 +37,6 @@ export class App extends Component {
         this.setState(prevState => ({
           page,
           pictures: [...prevState.pictures, ...data.hits],
-          error: null,
-          loading: true,
         }));
       } catch (error) {
         this.setState({ error });
@@ -48,14 +46,11 @@ export class App extends Component {
     }
 
     if (prevState.pictureName !== pictureName) {
-      this.setState({ error: null, loading: true });
+      this.setState({ error: null, loading: true, pictures: [], page: 1 });
       try {
         data = await fetchPictures(pictureName, page);
         this.setState({
-          page: 1,
           pictures: data.hits,
-          error: null,
-          loading: true,
         });
       } catch (error) {
         this.setState({ error });
@@ -69,8 +64,9 @@ export class App extends Component {
     const { pictures, loading } = this.state;
     return (
       <div>
-        <Searchbar dataForm={this.handleFormSubmit} />
         {loading && <Loader />}
+        <Searchbar dataForm={this.handleFormSubmit} />
+
         {pictures.length > 0 && <ImageGallery pictures={pictures} />}
         {!loading && pictures.length !== 0 && (
           <ButtonAPI onClick={this.loadMore} />
