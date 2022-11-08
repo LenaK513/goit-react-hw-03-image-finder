@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { fetchPictures } from 'api/fetchPictures';
 import { Searchbar } from 'components/Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { ButtonAPI } from './Button/Button';
+import { Loader } from './Loader/Loader';
 
 export class App extends Component {
   state = {
@@ -57,7 +58,7 @@ export class App extends Component {
     return (
       <div>
         <Searchbar dataForm={this.handleFormSubmit} />
-        {loading && <div>Loading</div>}
+        {loading && <Loader />}
         {pictures.length > 0 && <ImageGallery pictures={pictures} />}
         {pictures.length !== 0 && <ButtonAPI onClick={this.loadMore} />}
 
