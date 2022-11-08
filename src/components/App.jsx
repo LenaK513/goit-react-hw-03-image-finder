@@ -27,29 +27,41 @@ export class App extends Component {
   async componentDidUpdate(_, prevState) {
     const { pictureName, page } = this.state;
     let data;
-    try {
-      data = await fetchPictures(pictureName, page);
 
-      if (prevState.pictureName === pictureName && prevState.page !== page) {
+    if (prevState.pictureName === pictureName && prevState.page !== page) {
+      this.setState({ error: null, loading: true });
+      try {
+        data = await fetchPictures(pictureName, page);
+
         this.setState({ page });
         this.setState(prevState => ({
           page,
           pictures: [...prevState.pictures, ...data.hits],
           error: null,
+          loading: true,
         }));
+      } catch (error) {
+        this.setState({ error });
+      } finally {
+        this.setState({ loading: false });
       }
+    }
 
-      if (prevState.pictureName !== pictureName) {
+    if (prevState.pictureName !== pictureName) {
+      this.setState({ error: null, loading: true });
+      try {
+        data = await fetchPictures(pictureName, page);
         this.setState({
           page: 1,
           pictures: data.hits,
           error: null,
+          loading: true,
         });
+      } catch (error) {
+        this.setState({ error });
+      } finally {
+        this.setState({ loading: false });
       }
-    } catch (error) {
-      this.setState({ error });
-    } finally {
-      this.setState({ loading: false });
     }
   }
 
@@ -60,7 +72,9 @@ export class App extends Component {
         <Searchbar dataForm={this.handleFormSubmit} />
         {loading && <Loader />}
         {pictures.length > 0 && <ImageGallery pictures={pictures} />}
-        {pictures.length !== 0 && <ButtonAPI onClick={this.loadMore} />}
+        {!loading && pictures.length !== 0 && (
+          <ButtonAPI onClick={this.loadMore} />
+        )}
 
         <ToastContainer autoClose={2000} />
       </div>
