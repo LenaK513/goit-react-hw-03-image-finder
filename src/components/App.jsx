@@ -29,12 +29,14 @@ export class App extends Component {
     let data;
 
     if (prevState.pictureName === pictureName && prevState.page !== page) {
-      this.setState({ error: null, loading: true });
+      this.setState({ loading: true });
       try {
         data = await fetchPictures(pictureName, page);
 
         this.setState({ page });
         this.setState(prevState => ({
+          loading: true,
+          error: null,
           page,
           pictures: [...prevState.pictures, ...data.hits],
         }));
