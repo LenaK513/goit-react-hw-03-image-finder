@@ -16,7 +16,7 @@ export class App extends Component {
     error: null,
     page: 1,
     showModal: false,
-    largeImageURL: '',
+    ImageURL: '',
   };
 
   async componentDidUpdate(_, prevState) {
@@ -66,14 +66,14 @@ export class App extends Component {
   };
 
   toggleModal = largeImageURL => {
-    this.setState(({ showModal, largeImageURL }) => ({
+    this.setState(({ showModal, ImageURL }) => ({
       showModal: !showModal,
-      largeImageURL,
+      ImageURL: largeImageURL,
     }));
   };
 
   render() {
-    const { pictures, loading, showModal, largeImageURL } = this.state;
+    const { pictures, loading, showModal, ImageURL } = this.state;
     return (
       <div>
         <Searchbar dataForm={this.handleFormSubmit} />
@@ -84,7 +84,7 @@ export class App extends Component {
           <ButtonAPI onClick={this.loadMore} />
         )}
         {showModal && (
-          <Modal largeImageURL={largeImageURL} onClick={this.toggleModal} />
+          <Modal largeImageURL={ImageURL} onClick={this.toggleModal} />
         )}
         <ToastContainer autoClose={2000} />
       </div>
