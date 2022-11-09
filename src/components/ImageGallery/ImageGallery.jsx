@@ -6,21 +6,24 @@ import { Grid } from './ImageGallery.styled';
 export const ImageGallery = ({ pictures, toogleModal }) => {
   return (
     <Grid>
-      {pictures.map(({ id, webformatURL, tags, largeImageURL }) => (
-        <ImageGalleryItem
-          id={id}
-          key={id}
-          src={webformatURL}
-          tags={tags}
-          largeImageURL={largeImageURL}
-          toogleModal={toogleModal}
-        ></ImageGalleryItem>
-      ))}
+      {pictures.map(
+        ({ id, webformatURL, tags, largeImageURL, toogleModal }) => (
+          <ImageGalleryItem
+            id={id}
+            key={id}
+            src={webformatURL}
+            tags={tags}
+            largeImageURL={largeImageURL}
+            onClick={() => toogleModal(largeImageURL)}
+          ></ImageGalleryItem>
+        )
+      )}
     </Grid>
   );
 };
 
 ImageGallery.propTypes = {
+  toogleModal: PropTypes.func,
   pictures: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -29,5 +32,4 @@ ImageGallery.propTypes = {
       tags: PropTypes.string,
     })
   ),
-  toogleModal: PropTypes.func,
 };
