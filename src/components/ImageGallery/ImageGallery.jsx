@@ -7,14 +7,14 @@ export const ImageGallery = ({ pictures, toogleModal }) => {
   return (
     <Grid>
       {pictures.map(
-        ({ id, webformatURL, tags, largeImageURL, toogleModal }) => (
+        ({ id, webformatURL, tags, largeImageURL, toggleModal }) => (
           <ImageGalleryItem
             id={id}
             key={id}
             src={webformatURL}
             tags={tags}
             largeImageURL={largeImageURL}
-            onClick={() => toogleModal(largeImageURL)}
+            toggleModal={toggleModal}
           ></ImageGalleryItem>
         )
       )}
@@ -23,7 +23,7 @@ export const ImageGallery = ({ pictures, toogleModal }) => {
 };
 
 ImageGallery.propTypes = {
-  toogleModal: PropTypes.func,
+  toggleModal: PropTypes.func,
   pictures: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,

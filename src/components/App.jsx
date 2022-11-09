@@ -77,7 +77,7 @@ export class App extends Component {
     return (
       <div>
         <Searchbar dataForm={this.handleFormSubmit} />
-        <ImageGallery pictures={pictures} onClick={this.toggleModal} />
+        <ImageGallery pictures={pictures} toggleModal={this.toggleModal} />
         {loading && <Loader />}
 
         {!loading && pictures.length !== 0 && (
