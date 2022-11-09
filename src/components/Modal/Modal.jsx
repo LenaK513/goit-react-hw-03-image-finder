@@ -37,7 +37,7 @@ export class Modal extends Component {
 
 Modal.propTypes = {
   largeImageURL: PropTypes.string.isRequired,
-  tags: PropTypes.string.isRequired,
+  tags: PropTypes.string,
   handleBdClick: PropTypes.func,
   handleKeyDown: PropTypes.func,
 };
