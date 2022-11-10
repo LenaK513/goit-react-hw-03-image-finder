@@ -16,6 +16,7 @@ export class App extends Component {
     error: null,
     page: 1,
     showModal: false,
+    showBtn: false,
     ImageURL: '',
   };
 
@@ -24,17 +25,20 @@ export class App extends Component {
     let data;
 
     if (prevState.pictureName === pictureName && prevState.page !== page) {
-      this.setState({ loading: true });
       try {
         data = await fetchPictures(pictureName, page);
 
-        this.setState({ page });
         this.setState(prevState => ({
+          showBtn: true,
           loading: true,
           error: null,
           page,
           pictures: [...prevState.pictures, ...data.hits],
         }));
+        if (data.hits.length < 12) {
+          console.log(page);
+          this.setState({ showBtn: false });
+        }
       } catch (error) {
         this.setState({ error });
       } finally {
@@ -43,12 +47,23 @@ export class App extends Component {
     }
 
     if (prevState.pictureName !== pictureName) {
-      this.setState({ loading: true, error: null, pictures: [], page: 1 });
+      this.setState({
+        loading: true,
+        error: null,
+        pictures: [],
+        page: 1,
+        showBtn: true,
+      });
       try {
         data = await fetchPictures(pictureName, page);
+
         this.setState({
           pictures: data.hits,
         });
+        if (data.hits.length < 12) {
+          console.log(page);
+          this.setState({ showBtn: false });
+        }
       } catch (error) {
         this.setState({ error });
       } finally {
@@ -73,14 +88,14 @@ export class App extends Component {
   };
 
   render() {
-    const { pictures, loading, showModal, ImageURL } = this.state;
+    const { pictures, loading, showModal, ImageURL, showBtn } = this.state;
     return (
       <div>
         <Searchbar dataForm={this.handleFormSubmit} />
         <ImageGallery pictures={pictures} toggleModal={this.toggleModal} />
         {loading && <Loader />}
 
-        {!loading && pictures.length !== 0 && (
+        {!loading && showBtn && pictures.length !== 0 && (
           <ButtonAPI onClick={this.loadMore} />
         )}
         {showModal && (
