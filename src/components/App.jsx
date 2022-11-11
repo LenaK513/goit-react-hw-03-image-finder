@@ -24,7 +24,7 @@ export class App extends Component {
     const { pictureName, page } = this.state;
     let data;
 
-    if (prevState.pictureName === pictureName && prevState.page !== page) {
+    if (prevState.pictureName !== pictureName || prevState.page !== page) {
       try {
         data = await fetchPictures(pictureName, page);
 
@@ -46,34 +46,41 @@ export class App extends Component {
       }
     }
 
-    if (prevState.pictureName !== pictureName) {
-      this.setState({
-        loading: true,
-        error: null,
-        pictures: [],
-        page: 1,
-        showBtn: true,
-      });
-      try {
-        data = await fetchPictures(pictureName, page);
+    // if (prevState.pictureName !== pictureName) {
+    //   this.setState({
+    //     loading: true,
+    //     error: null,
+    //     pictures: [],
+    //     page: 1,
+    //     showBtn: true,
+    //   });
+    //   try {
+    //     data = await fetchPictures(pictureName, page);
 
-        this.setState({
-          pictures: data.hits,
-        });
-        if (data.hits.length < 12) {
-          console.log(page);
-          this.setState({ showBtn: false });
-        }
-      } catch (error) {
-        this.setState({ error });
-      } finally {
-        this.setState({ loading: false });
-      }
-    }
+    //     this.setState({
+    //       pictures: data.hits,
+    //     });
+    //     if (data.hits.length < 12) {
+    //       console.log(page);
+    //       this.setState({ showBtn: false });
+    //     }
+    //   } catch (error) {
+    //     this.setState({ error });
+    //   } finally {
+    //     this.setState({ loading: false });
+    //   }
+    // }
   }
 
   handleFormSubmit = pictureName => {
-    this.setState({ pictureName });
+    this.setState({
+      pictureName,
+      loading: true,
+      error: null,
+      pictures: [],
+      page: 1,
+      showBtn: true,
+    });
   };
 
   loadMore = () => {
